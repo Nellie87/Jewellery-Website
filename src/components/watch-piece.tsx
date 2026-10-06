@@ -39,10 +39,11 @@ const dials: Record<
 
 function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   const rad = (deg: number) => (deg * Math.PI) / 180
-  const x0 = cx + r * Math.cos(rad(a0))
-  const y0 = cy + r * Math.sin(rad(a0))
-  const x1 = cx + r * Math.cos(rad(a1))
-  const y1 = cy + r * Math.sin(rad(a1))
+  const n = (value: number) => Math.round(value * 100) / 100
+  const x0 = n(cx + r * Math.cos(rad(a0)))
+  const y0 = n(cy + r * Math.sin(rad(a0)))
+  const x1 = n(cx + r * Math.cos(rad(a1)))
+  const y1 = n(cy + r * Math.sin(rad(a1)))
   const large = a1 - a0 > 180 ? 1 : 0
   return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`
 }

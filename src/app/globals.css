@@ -123,13 +123,176 @@
    circles on the right and the lens circle at the bottom carved out of it. */
 .card-stage {
   container-type: size;
+  container-name: card;
 }
 
-.card-shadow {
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.22));
+/* The product photo is taken out of flow, so its box has no minimum size and a
+   short screen will flex-shrink it away. Hold a visible slice, then let the
+   copy give up space and scroll instead of covering the footer. */
+.hero-stage {
+  /* Shrink well before the copy, so the price stays on screen and the photo gives up height first. */
+  flex: 1 5 46vh;
+  min-height: 120px;
+  max-height: 46vh;
+}
+
+.hero-copy {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.hero-copy::-webkit-scrollbar {
+  display: none;
+}
+
+/* Wide but short (phones in landscape, short tablet windows): product beside
+   the copy. Stop below the desktop cutout layout, which aligns to a 40% column. */
+@container card (max-height: 720px) and (min-width: 560px) and (max-width: 970px) {
+  header {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+
+  .site-footer {
+    padding-top: 0.35rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .stage-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .hero-stack {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .hero-stage {
+    order: 0;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .hero-copy {
+    order: 0;
+    min-height: 0;
+  }
+
+  .hero-index {
+    display: none;
+  }
+
+  .hero-index-inline {
+    display: block;
+    margin-top: 0.45rem;
+  }
+
+  .hero-title {
+    margin-top: 0.5rem;
+  }
+
+  .hero-blurb {
+    margin-top: 0.5rem;
+  }
+
+  .hero-cta {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Narrow and short: keep the piece, the price, and the footer on screen. */
+@container card (max-width: 420px) and (max-height: 640px) {
+  .hero-stage {
+    flex-basis: 34vh;
+    flex-shrink: 8;
+    min-height: 108px;
+    max-height: 40vh;
+  }
+
+  .hero-copy {
+    flex-shrink: 0;
+    overflow: visible;
+  }
+
+  .hero-title {
+    margin-top: 0.35rem;
+    font-size: clamp(1.45rem, 8vw, 1.9rem);
+  }
+
+  .hero-blurb {
+    margin-top: 0.45rem;
+    font-size: 15px;
+  }
+
+  .hero-tagline {
+    margin-top: 0.2rem;
+  }
+
+  .hero-cta {
+    margin-top: 0.7rem;
+  }
+
+  .hero-kicker {
+    letter-spacing: 0.18em;
+  }
+}
+
+@container card (max-width: 360px) {
+  .site-footer {
+    gap: 0.25rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+  }
+
+  .footer-socials {
+    gap: 0;
+  }
+
+  .footer-socials button {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .footer-nav {
+    gap: 0.35rem;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
 }
 
 @media (min-width: 1024px) {
+  .hero-stage {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+}
+
+.card-shadow {
+  /* Hairline keeps every edge (card, corners, cutouts) crisp; the two soft
+     layers give lift without pooling grey inside the circles. */
+  filter: drop-shadow(0 0 0.6px rgba(0, 0, 0, 0.3)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.08));
+}
+
+@media (min-width: 1024px) {
+  .card-shadow {
+    filter: url(#card-round) drop-shadow(0 0 0.6px rgba(0, 0, 0, 0.3)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.07))
+      drop-shadow(0 10px 18px rgba(0, 0, 0, 0.08));
+  }
+
+  /* Jewellery has no hourglass cutouts: only the round close-up is punched out. */
+  .card-shape[data-plain] {
+    -webkit-mask-image: radial-gradient(circle at 41% 80cqh, transparent calc(23cqh + 6px), #000 calc(23cqh + 6.5px));
+    mask-image: radial-gradient(circle at 41% 80cqh, transparent calc(23cqh + 6px), #000 calc(23cqh + 6.5px));
+  }
+
   .card-shape {
     -webkit-mask-image:
       radial-gradient(circle at 70% 8cqh, transparent 28cqh, #000 calc(28cqh + 0.5px)),

@@ -155,3 +155,136 @@ export function watchName(watch: Watch) {
 export function formatPrice(price: number) {
   return `$ ${price}`
 }
+
+/* ------------------------------------------------------------------ */
+/* Jewellery                                                           */
+/* ------------------------------------------------------------------ */
+
+export type Category = "watches" | "jewellery"
+
+export type JewelKind = "necklace" | "earrings" | "ring"
+
+export type Jewel = {
+  id: string
+  kind: JewelKind
+  /** Label used in the navigation, e.g. "Necklace". */
+  label: string
+  name: string
+  kicker: string
+  blurb: string
+  material: string
+  price: number
+  image: string
+  width: number
+  height: number
+  /** Pearl centre in the photo, and how many photo pixels the round close-up spans. */
+  focus: { x: number; y: number; span: number }
+  /** Crops in from the bottom centre to trim baked-in text from the supplied photo. */
+  zoom?: number
+}
+
+export type JewelleryEdit = {
+  kicker: string
+  title: string
+  tagline: string
+  /** Backdrop colour of the card while this edit is showing. */
+  tone: string
+  /** Pieces in display order (left to right). */
+  pieces: Jewel[]
+}
+
+/** Pieces that come as a set are shown together, hung and posed on their plinths. */
+export const jewelleryEdits: JewelleryEdit[] = [
+  {
+    kicker: "The Pearl Edit",
+    title: "Pearls in Gold",
+    tagline: "Quiet luxury, made to be remembered.",
+    tone: "#cdbab6",
+    pieces: [
+      {
+        id: "pearl-earrings",
+        kind: "earrings",
+        label: "Earrings",
+        name: "Pearl Earrings",
+        kicker: "Drop earrings",
+        blurb: "Soft, uneven gold loops that each hold a single pearl drop. Light enough for every day.",
+        material: "Gold vermeil · freshwater pearl",
+        price: 179,
+        image: "/jewellery/pearl-earrings.png",
+        focus: { x: 263, y: 466, span: 260 },
+        width: 736,
+        height: 981,
+      },
+      {
+        id: "pearl-pendant",
+        kind: "necklace",
+        label: "Necklace",
+        name: "Gold Pearl Pendant",
+        kicker: "Pendant necklace",
+        blurb: "A single pearl resting in an open gold teardrop, hung from a fine chain.",
+        material: "Gold chain · freshwater pearl",
+        price: 299,
+        image: "/jewellery/pearl-pendant.png",
+        focus: { x: 358, y: 648, span: 230 },
+        zoom: 1.3,
+        width: 735,
+        height: 919,
+      },
+      {
+        id: "pearl-ring",
+        kind: "ring",
+        label: "Ring",
+        name: "Gold Pearl Ring",
+        kicker: "Cocktail ring",
+        blurb: "A broad polished gold band with a round pearl set proud on top.",
+        material: "Polished gold · freshwater pearl",
+        price: 249,
+        image: "/jewellery/pearl-ring.png",
+        focus: { x: 405, y: 422, span: 250 },
+        width: 736,
+        height: 981,
+      },
+    ],
+  },
+]
+
+export const jewels: Jewel[] = jewelleryEdits.flatMap((edit) => edit.pieces)
+
+/** Anything that can go in the cart, saved list or search results. */
+export type Product = {
+  id: string
+  category: Category
+  name: string
+  /** Second line: material or strap. */
+  detail: string
+  /** Searchable text. */
+  keywords: string
+  price: number
+  /** Thumbnail image. */
+  image: string
+}
+
+export const products: Product[] = [
+  ...watches.map<Product>((watch) => ({
+    id: watch.id,
+    category: "watches",
+    name: watchName(watch),
+    detail: watch.material,
+    keywords: [watchName(watch), watch.kicker, watch.blurb, watch.material, watch.collection, "watch"].join(" "),
+    price: watch.price,
+    image: watchImage(watch),
+  })),
+  ...jewels.map<Product>((jewel) => ({
+    id: jewel.id,
+    category: "jewellery",
+    name: jewel.name,
+    detail: jewel.material,
+    keywords: [jewel.name, jewel.kicker, jewel.blurb, jewel.material, jewel.kind, jewel.label, "jewellery"].join(" "),
+    price: jewel.price,
+    image: jewel.image,
+  })),
+]
+
+export function productById(id: string) {
+  return products.find((product) => product.id === id)
+}

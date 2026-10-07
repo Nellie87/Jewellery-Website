@@ -28,7 +28,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A rose-gold case around an open-worked tourbillon, on a textured black strap. Slimmer than the movement inside suggests.",
-    price: 359,
+    price: 46600,
     material: "Black rubber · rose gold case",
     tone: "#e7c2a8",
     focus: { x: 360, y: 555, span: 300 },
@@ -43,7 +43,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A blacked-out titanium case, electric-blue hands, and a movement you can read straight through.",
-    price: 429,
+    price: 55700,
     material: "Black rubber · black titanium case",
     tone: "#b7cbe2",
     focus: { x: 362, y: 558, span: 320 },
@@ -58,7 +58,7 @@ export const watches: Watch[] = [
     lead2: "Open",
     trail2: "Heart",
     blurb: "A knurled steel bezel and an olive rubber strap, with the tourbillon on show in hard daylight.",
-    price: 389,
+    price: 50500,
     material: "Olive rubber · steel case",
     tone: "#c5d0b4",
     focus: { x: 359, y: 572, span: 320 },
@@ -73,7 +73,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A graphite case, gold-toned bridges and brown alligator-grain leather for dinners and the walk home.",
-    price: 519,
+    price: 67300,
     material: "Brown leather · graphite case",
     tone: "#d4b59a",
     focus: { x: 359, y: 571, span: 300 },
@@ -88,7 +88,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A small rose-gold case with the movement on show, set on a soft blush strap.",
-    price: 339,
+    price: 44000,
     material: "Blush leather · rose gold case",
     tone: "#f0cfc6",
     focus: { x: 359, y: 580, span: 230 },
@@ -103,7 +103,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A pavé-set bezel, a silver skeleton dial and a cream strap that sits well with linen or denim.",
-    price: 499,
+    price: 64800,
     material: "Ivory leather · white gold case",
     tone: "#efe8dc",
     focus: { x: 360, y: 552, span: 280 },
@@ -118,7 +118,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "Warm yellow gold around an open tourbillon, on a tan strap made for long afternoons.",
-    price: 449,
+    price: 58300,
     material: "Tan leather · gold case",
     tone: "#e8c79a",
     focus: { x: 359, y: 576, span: 290 },
@@ -133,7 +133,7 @@ export const watches: Watch[] = [
     lead2: "",
     trail2: "",
     blurb: "A small rose-gold case on textured black, with a dial that shows its workings and keeps the rest.",
-    price: 379,
+    price: 49200,
     material: "Black rubber · rose gold case",
     tone: "#d9b8a6",
     focus: { x: 361, y: 569, span: 250 },
@@ -153,7 +153,8 @@ export function watchName(watch: Watch) {
 }
 
 export function formatPrice(price: number) {
-  return `$ ${price}`
+  const amount = new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(price)
+  return `KSh ${amount}`
 }
 
 /* ------------------------------------------------------------------ */
@@ -209,7 +210,7 @@ export const jewelleryEdits: JewelleryEdit[] = [
         kicker: "Drop earrings",
         blurb: "Soft, uneven gold loops that each hold a single pearl drop. Light enough for every day.",
         material: "Gold vermeil · freshwater pearl",
-        price: 179,
+        price: 23200,
         image: "/jewellery/pearl-earrings.png",
         focus: { x: 263, y: 466, span: 260 },
         width: 736,
@@ -223,7 +224,7 @@ export const jewelleryEdits: JewelleryEdit[] = [
         kicker: "Pendant necklace",
         blurb: "A single pearl resting in an open gold teardrop, hung from a fine chain.",
         material: "Gold chain · freshwater pearl",
-        price: 299,
+        price: 38800,
         image: "/jewellery/pearl-pendant.png",
         focus: { x: 358, y: 648, span: 230 },
         zoom: 1.55,
@@ -238,7 +239,7 @@ export const jewelleryEdits: JewelleryEdit[] = [
         kicker: "Cocktail ring",
         blurb: "A broad polished gold band with a round pearl set proud on top.",
         material: "Polished gold · freshwater pearl",
-        price: 249,
+        price: 32300,
         image: "/jewellery/pearl-ring.png",
         focus: { x: 405, y: 422, span: 250 },
         width: 736,

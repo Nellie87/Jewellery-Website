@@ -250,7 +250,7 @@ function PearlPiece({
       <p className="mt-2 max-w-full font-serif text-[10px] leading-tight tracking-[0.14em] text-[#1c2740] uppercase sm:mt-3 sm:text-[12px] sm:tracking-[0.18em]">
         {piece.name}
       </p>
-      <p className="font-serif text-[clamp(15px,2.4vw,22px)] text-[#a68450] italic">${piece.price}</p>
+      <p className="font-serif text-[clamp(15px,2.4vw,22px)] text-[#a68450] italic">{formatPrice(piece.price)}</p>
     </button>
   )
 }

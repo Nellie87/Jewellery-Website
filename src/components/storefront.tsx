@@ -19,10 +19,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { MiniWatch, WatchPiece } from "@/components/watch-piece"
+import Image from "next/image"
 import {
   collectionOf,
   formatPrice,
+  watchImage,
   watchName,
   watches,
   type Collection,
@@ -33,7 +34,7 @@ import { cn } from "@/lib/utils"
 type CartLine = { id: string; qty: number }
 
 const iconButtonClass =
-  "size-9 text-white hover:bg-white/10 hover:text-white focus-visible:ring-white/40"
+  "size-9 text-white hover:bg-white/10 hover:text-white focus-visible:ring-white/40 lg:text-black lg:hover:bg-black/10 lg:hover:text-black lg:focus-visible:ring-black/30"
 
 function MenuIcon() {
   return (
@@ -69,6 +70,19 @@ function CartIcon() {
       <circle cx="9" cy="19.5" r="1" fill="currentColor" />
       <circle cx="17" cy="19.5" r="1" fill="currentColor" />
     </svg>
+  )
+}
+
+function WatchThumb({ item }: { item: Watch }) {
+  return (
+    <Image
+      src={watchImage(item)}
+      alt=""
+      width={720}
+      height={1280}
+      sizes="48px"
+      className="h-16 w-9 shrink-0 rounded-md bg-white/5 object-cover object-center"
+    />
   )
 }
 
@@ -114,6 +128,7 @@ export function Storefront() {
 
   const list = collectionOf(collection)
   const watch = list[index] ?? list[0]
+  const peek = list[((index >= list.length ? 0 : index) + 1) % list.length]
   const count = cart.reduce((sum, line) => sum + line.qty, 0)
 
   useEffect(() => {
@@ -199,21 +214,58 @@ export function Storefront() {
     .map((id) => watches.find((item) => item.id === id))
     .filter((item): item is Watch => Boolean(item))
 
-  return (
-    <div className="flex h-dvh bg-[#c19a78] p-[clamp(10px,3.6vh,46px)_clamp(10px,2.6vw,40px)] text-white">
-      <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-[#232826] shadow-[0_28px_70px_rgba(88,52,28,0.32)]">
-        <div className="pointer-events-none absolute inset-0 hidden lg:block">
-          <div className="absolute top-[6%] left-[36%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e6cbb4]" />
-          <div className="absolute top-[94%] left-[36%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e6cbb4]" />
-        </div>
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40 mix-blend-overlay"
-          style={{ backgroundImage: "url(/grain.svg)", backgroundSize: "180px" }}
-        />
-        <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,0.28)]" />
+  const indexNav = (
+    <ol className="flex items-center gap-5" aria-label="Pieces in this collection">
+      {list.map((item, position) => (
+        <li key={item.id}>
+          <button
+            type="button"
+            onClick={() => setIndex(position)}
+            aria-current={item.id === watch.id ? "true" : undefined}
+            aria-label={`${item.code}, ${watchName(item)}`}
+            className={cn(
+              "font-serif text-[15px] font-semibold tracking-[0.12em] transition-colors",
+              item.id === watch.id
+                ? "border-b border-white text-white"
+                : "text-white/45 hover:text-white/80"
+            )}
+          >
+            {item.code}
+          </button>
+        </li>
+      ))}
+    </ol>
+  )
 
-        <header className="relative z-20 flex items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:grid lg:h-[72px] lg:grid-cols-[14%_42%_1fr_7%] lg:px-0 lg:py-0">
-          <div className="flex items-center gap-3 sm:gap-4 lg:col-span-2 lg:pl-7">
+  return (
+    <div className="flex h-dvh bg-[#f3f1ee] p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-white">
+      <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-black shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
+        <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden>
+          <div className="absolute top-[4%] left-[90%] aspect-square h-[74%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f3f1ee]" />
+          <div className="absolute top-[96%] left-[90%] aspect-square h-[74%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f3f1ee]" />
+          <div className="absolute top-full left-[33%] aspect-square h-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f3f1ee]" />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIndex((current) => (current + 1) % list.length)}
+          aria-label={`Next piece: ${watchName(peek)}`}
+          className="absolute top-[calc(100%-clamp(120px,24vh,190px))] left-[33%] z-[5] hidden w-[clamp(150px,19vw,270px)] -translate-x-1/2 cursor-pointer lg:block"
+        >
+          <Image
+            key={peek.id}
+            src={watchImage(peek)}
+            alt=""
+            width={720}
+            height={1280}
+            sizes="270px"
+            draggable={false}
+            className="h-auto w-full select-none opacity-95 transition-transform duration-500 hover:-translate-y-2 motion-safe:animate-in motion-safe:fade-in"
+          />
+        </button>
+
+        <header className="relative z-20 flex items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:grid lg:h-[76px] lg:grid-cols-[1fr_auto_1fr] lg:px-0 lg:py-0">
+          <div className="flex items-center gap-3 sm:gap-4 lg:pl-9">
             <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger
                 render={
@@ -246,15 +298,15 @@ export function Storefront() {
                   </Button>
                 </div>
                 <p className="px-4 text-sm leading-6 text-white/75">
-                  The caramel strap on 01 is the house case. The other three change with the season: a night runner, a field piece, and something quieter for after dark. Arrow keys move between them.
+                  Piece 01 is the house case: rose gold around an open tourbillon. The other three change with the season. Arrow keys move between them.
                 </p>
               </SheetContent>
             </Sheet>
-            <p className="text-[13px] font-semibold tracking-[0.16em] sm:text-[15px]">S&apos;WATCH</p>
+            <p className="font-display text-[15px] tracking-[0.12em] uppercase sm:text-[17px]">S&apos;WATCH</p>
           </div>
 
-          <div className="flex items-center justify-end gap-1 lg:col-span-2 lg:justify-between lg:pr-7">
-            <nav className="hidden items-center gap-8 lg:flex" aria-label="Collections">
+          <div className="flex items-center justify-end gap-1 lg:contents">
+            <nav className="hidden items-center gap-10 lg:flex" aria-label="Collections">
               {(["men", "women"] as const).map((item) => (
                 <button
                   key={item}
@@ -262,15 +314,15 @@ export function Storefront() {
                   onClick={() => chooseCollection(item)}
                   aria-pressed={collection === item}
                   className={cn(
-                    "text-[13px] font-medium tracking-[0.16em] text-white uppercase",
-                    collection === item && "underline decoration-2 underline-offset-[7px]"
+                    "font-serif text-[15px] font-semibold tracking-[0.14em] text-white uppercase",
+                    collection === item && "underline decoration-1 underline-offset-[8px]"
                   )}
                 >
                   {item}
                 </button>
               ))}
             </nav>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 lg:justify-self-end lg:pr-8">
             <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
               <Button
                 variant="ghost"
@@ -298,14 +350,14 @@ export function Storefront() {
                     autoFocus
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Try caramel, rose, field"
+                    placeholder="Try rose, olive, black"
                     className="h-10 border-white/15 bg-white/5 text-white placeholder:text-white/40"
                   />
                 </form>
                 <ul className="max-h-72 space-y-1 overflow-auto">
                   {results.length === 0 ? (
                     <li className="px-1 py-6 text-sm text-white/70">
-                      No case matches that. Try caramel, rose, or field.
+                      No case matches that. Try rose, olive, or black.
                     </li>
                   ) : (
                     results.map((item) => (
@@ -315,11 +367,11 @@ export function Storefront() {
                           onClick={() => openWatch(item)}
                           className="flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-white/10"
                         >
-                          <MiniWatch strap={item.strap} metal={item.metal} />
+                          <WatchThumb item={item} />
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-medium">{watchName(item)}</span>
                             <span className="block text-xs tracking-wide text-white/55 uppercase">
-                              {item.collection} · {formatPrice(item.price)}
+                              {item.collection} Â· {formatPrice(item.price)}
                             </span>
                           </span>
                         </button>
@@ -354,13 +406,13 @@ export function Storefront() {
                 </div>
                 {savedWatches.length === 0 ? (
                   <p className="px-4 text-sm leading-6 text-white/70">
-                    Nothing saved yet. The house case is the caramel strap on slide 01.
+                    Nothing saved yet. The house case is the rose-gold tourbillon on slide 01.
                   </p>
                 ) : (
                   <ul className="space-y-2 overflow-auto px-4">
                     {savedWatches.map((item) => (
                       <li key={item.id} className="flex items-center gap-3">
-                        <MiniWatch strap={item.strap} metal={item.metal} />
+                        <WatchThumb item={item} />
                         <button type="button" className="min-w-0 flex-1 text-left" onClick={() => openWatch(item)}>
                           <span className="block truncate text-sm font-medium">{watchName(item)}</span>
                           <span className="text-xs text-white/55">{formatPrice(item.price)}</span>
@@ -410,7 +462,7 @@ export function Storefront() {
                 ) : cart.length === 0 ? (
                   <div className="space-y-4 px-4">
                     <p className="text-sm leading-6 text-white/75">
-                      The cart is empty. Most people start with the caramel strap.
+                      The cart is empty. Most people start with the rose-gold tourbillon.
                     </p>
                     <Button
                       className="h-10 rounded-[3px] bg-[#e6e8e7] text-[#1c1c1c] hover:bg-white"
@@ -426,7 +478,7 @@ export function Storefront() {
                       if (!item) return null
                       return (
                         <li key={line.id} className="flex gap-3">
-                          <MiniWatch strap={item.strap} metal={item.metal} />
+                          <WatchThumb item={item} />
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium">{watchName(item)}</p>
                             <p className="text-xs text-white/55">{item.material}</p>
@@ -439,7 +491,7 @@ export function Storefront() {
                                 onClick={() => setQty(line.id, line.qty - 1)}
                                 aria-label={`Decrease ${watchName(item)}`}
                               >
-                                −
+                                âˆ’
                               </Button>
                               <span className="w-6 text-center text-sm">{line.qty}</span>
                               <Button
@@ -477,7 +529,7 @@ export function Storefront() {
                       disabled={reserving}
                       onClick={reserve}
                     >
-                      {reserving ? "Reserving…" : "Reserve order"}
+                      {reserving ? "Reservingâ€¦" : "Reserve order"}
                     </Button>
                   </SheetFooter>
                 )}
@@ -487,40 +539,39 @@ export function Storefront() {
           </div>
         </header>
 
-        <div className="relative z-10 flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[14%_42%_1fr_7%] lg:grid-rows-1">
-          <div className="order-3 flex items-center gap-5 px-6 py-2 lg:order-none lg:flex-col lg:items-start lg:justify-center lg:gap-1 lg:px-0 lg:py-0 lg:pl-8">
-            <div className="relative">
-              <button
-                type="button"
-                className="relative text-[1.7rem] leading-none font-medium tracking-tight lg:text-[2.65rem]"
-                aria-current="true"
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[40%_1fr] lg:grid-rows-1">
+          <div className="order-2 flex items-center px-6 pb-4 lg:order-none lg:px-0 lg:pb-0 lg:pl-[12%]">
+            <div key={watch.id} className="motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
+              <p className="font-serif text-[12px] font-semibold tracking-[0.3em] text-white/70 uppercase sm:text-[13px]">
+                {watch.kicker}
+              </p>
+              <h1 className="mt-3 font-display text-[clamp(1.9rem,3.3vw,3.6rem)] leading-[1.1] tracking-[0.02em] text-white uppercase">
+                {watch.lead} {watch.trail}
+                {(watch.lead2 || watch.trail2) && (
+                  <>
+                    <br />
+                    {watch.lead2} {watch.trail2}
+                  </>
+                )}
+              </h1>
+              <p className="mt-4 max-w-[300px] font-serif text-[16px] leading-[1.35] text-white/90 sm:text-[18px]">
+                {watch.blurb}
+              </p>
+              <Button
+                className="mt-6 h-10 rounded-[4px] bg-white px-6 text-[12px] font-semibold tracking-[0.14em] text-black uppercase hover:bg-white/85"
+                onClick={() => addWatch()}
               >
-                {watch.code}
-              </button>
-              <span
-                className="pointer-events-none absolute top-1/2 z-10 hidden h-[3px] -translate-y-1/2 bg-[#e25c34] lg:block"
-                style={{ left: "-2rem", width: "calc(100% + 2.55rem)" }}
-                aria-hidden
-              />
-            </div>
-            <div className="flex gap-3 lg:mt-2 lg:flex-col lg:gap-0.5">
-              {list
-                .filter((item) => item.id !== watch.id)
-                .map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => setIndex(list.findIndex((entry) => entry.id === item.id))}
-                    className="text-left text-[13px] font-medium text-white/45 hover:text-white/80 lg:text-sm"
-                  >
-                    {item.code}
-                  </button>
-                ))}
+                {added ? "Added to cart" : `Add to cart · ${formatPrice(watch.price)}`}
+              </Button>
+              <div className="mt-8 hidden lg:block">{indexNav}</div>
+              <p className="sr-only" aria-live="polite">
+                Showing {watch.code}, {watchName(watch)}, {formatPrice(watch.price)}
+              </p>
             </div>
           </div>
 
-            <div
-            className="relative order-1 flex flex-1 items-center justify-center lg:order-none"
+          <div
+            className="relative order-1 h-[46vh] lg:order-none lg:h-auto"
             onPointerDown={(event) => {
               dragX.current = event.clientX
             }}
@@ -532,68 +583,26 @@ export function Storefront() {
               dragX.current = null
             }}
           >
-            <div key={watch.id} className="relative z-10 w-fit motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-500">
-              <div className="pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[136%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e6cbb4]" />
-              <div
-                className="pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[96%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[#e25c34]"
-                style={{ borderWidth: "clamp(13px, 1.5vw, 20px)" }}
-              />
-              <WatchPiece
-                strap={watch.strap}
-                strapLight={watch.strapLight}
-                strapDeep={watch.strapDeep}
-                stitch={watch.stitch}
-                metal={watch.metal}
-                dial={watch.dial}
-                hour={watch.hour}
-                minute={watch.minute}
-                day={watch.day}
-                date={watch.date}
-                className="h-[min(42vh,380px)] lg:h-[min(58vh,500px)]"
-              />
-            </div>
-          </div>
-
-          <div className="order-2 flex items-center px-6 pb-4 lg:order-none lg:px-2 lg:pb-0">
-            <div key={watch.id} className="motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
-              <div className="grid grid-cols-[1.1rem_1fr] items-center gap-x-3 sm:gap-x-4">
-                <p className="rotate-180 text-[10px] font-medium tracking-[0.28em] text-white/85 uppercase [writing-mode:vertical-rl] sm:text-[11px]">
-                  {watch.kicker}
-                </p>
-                <h1 className="text-[clamp(1.7rem,2.55vw,2.7rem)] leading-[1.02] tracking-[-0.03em] text-white">
-                  <span className="font-semibold">{watch.lead}</span>
-                  <span className="ml-[0.32em] font-light">{watch.trail}</span>
-                  <br />
-                  <span className="font-semibold">{watch.lead2}</span>
-                  <span className="ml-[0.32em] font-light">{watch.trail2}</span>
-                </h1>
-                <span className="mx-auto h-16 w-[3px] bg-[#e25c34] sm:h-[4.5rem]" aria-hidden />
-                <div>
-                  <p className="max-w-[220px] text-[14px] leading-[1.45] text-white/90 sm:max-w-[236px] sm:text-[15px]">
-                    {watch.blurb}
-                  </p>
-                  <Button
-                    className="mt-4 h-[34px] rounded-[2px] bg-[#e6e8e7] px-3.5 text-[13px] font-medium text-[#222] hover:bg-white sm:mt-5"
-                    onClick={() => addWatch()}
-                  >
-                    {added ? "Added to cart" : `Add to Cart - ${formatPrice(watch.price)}`}
-                  </Button>
-                </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div key={watch.id} className="h-[112%] shrink-0 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-500 lg:h-[118%]">
+                <Image
+                  src={watchImage(watch)}
+                  alt={`${watchName(watch)} watch, ${watch.material}`}
+                  width={720}
+                  height={1280}
+                  preload
+                  sizes="(min-width: 1024px) 520px, 70vw"
+                  draggable={false}
+                  className="h-full w-auto select-none drop-shadow-[0_26px_40px_rgba(0,0,0,0.55)]"
+                />
               </div>
-              <p className="sr-only" aria-live="polite">
-                Showing {watch.code}, {watchName(watch)}, {formatPrice(watch.price)}
-              </p>
             </div>
           </div>
 
-          <div className="pointer-events-none relative hidden items-center justify-center lg:flex">
-            <p className="rotate-180 text-[clamp(3.4rem,6.4vh,5.1rem)] leading-none font-medium tracking-[0.14em] text-[#5e6462] uppercase [writing-mode:vertical-rl]">
-              Watch
-            </p>
-          </div>
+          <div className="order-3 px-6 py-2 lg:hidden">{indexNav}</div>
         </div>
 
-        <footer className="relative z-20 flex items-center justify-between px-5 py-3 sm:px-7 sm:pb-5">
+        <footer className="relative z-20 flex items-center justify-between px-5 py-3 sm:px-9 sm:pb-6">
           <div className="flex items-center gap-4">
             {(["facebook", "instagram", "twitter"] as const).map((kind) => (
               <Button
@@ -608,13 +617,13 @@ export function Storefront() {
               </Button>
             ))}
           </div>
-          <nav className="flex gap-4 text-[12px] tracking-[0.16em] text-white/80 uppercase lg:hidden" aria-label="Collections">
+          <nav className="flex gap-4 font-serif text-[14px] font-semibold tracking-[0.16em] text-white/80 uppercase lg:hidden" aria-label="Collections">
             {(["men", "women"] as const).map((item) => (
               <button
                 key={item}
                 type="button"
                 onClick={() => chooseCollection(item)}
-                className={cn(collection === item && "underline decoration-2 underline-offset-4")}
+                className={cn(collection === item && "underline decoration-1 underline-offset-4")}
               >
                 {item}
               </button>
@@ -624,9 +633,9 @@ export function Storefront() {
             type="button"
             aria-label="Next watch"
             onClick={() => setIndex((current) => (current + 1) % list.length)}
-            className="flex h-8 w-[18px] items-center justify-center rounded-full border border-white/90"
+            className="flex h-8 w-[18px] items-center justify-center rounded-full border border-white/90 lg:border-black"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white lg:bg-black" />
           </button>
         </footer>
 
@@ -639,7 +648,7 @@ export function Storefront() {
               </DialogDescription>
             </DialogHeader>
             <ul className="space-y-2 text-sm">
-              <li>Instagram · @swatch.atelier</li>
+              <li>Instagram Â· @swatch.atelier</li>
               <li>Journal notes go out with each season, not a feed.</li>
               <li>Studio visits are Thursday mornings, by the list.</li>
             </ul>

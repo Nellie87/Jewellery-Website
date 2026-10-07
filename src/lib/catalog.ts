@@ -12,6 +12,7 @@ export type Watch = {
   blurb: string
   price: number
   material: string
+  tone: string
 }
 
 export const watches: Watch[] = [
@@ -27,6 +28,7 @@ export const watches: Watch[] = [
     blurb: "A rose-gold case around an open-worked tourbillon, on a textured black strap. Slimmer than the movement inside suggests.",
     price: 359,
     material: "Black rubber · rose gold case",
+    tone: "#e7c2a8",
   },
   {
     id: "men-midnight",
@@ -40,6 +42,7 @@ export const watches: Watch[] = [
     blurb: "A blacked-out titanium case, electric-blue hands, and a movement you can read straight through.",
     price: 429,
     material: "Black rubber · black titanium case",
+    tone: "#b7cbe2",
   },
   {
     id: "men-field",
@@ -53,6 +56,7 @@ export const watches: Watch[] = [
     blurb: "A knurled steel bezel and an olive rubber strap, with the tourbillon on show in hard daylight.",
     price: 389,
     material: "Olive rubber · steel case",
+    tone: "#c5d0b4",
   },
   {
     id: "men-evening",
@@ -66,6 +70,7 @@ export const watches: Watch[] = [
     blurb: "A graphite case, gold-toned bridges and brown alligator-grain leather for dinners and the walk home.",
     price: 519,
     material: "Brown leather · graphite case",
+    tone: "#d4b59a",
   },
   {
     id: "women-rose",
@@ -79,6 +84,7 @@ export const watches: Watch[] = [
     blurb: "A small rose-gold case with the movement on show, set on a soft blush strap.",
     price: 339,
     material: "Blush leather · rose gold case",
+    tone: "#f0cfc6",
   },
   {
     id: "women-ivory",
@@ -92,6 +98,7 @@ export const watches: Watch[] = [
     blurb: "A pavé-set bezel, a silver skeleton dial and a cream strap that sits well with linen or denim.",
     price: 499,
     material: "Ivory leather · white gold case",
+    tone: "#efe8dc",
   },
   {
     id: "women-gilt",
@@ -105,6 +112,7 @@ export const watches: Watch[] = [
     blurb: "Warm yellow gold around an open tourbillon, on a tan strap made for long afternoons.",
     price: 449,
     material: "Tan leather · gold case",
+    tone: "#e8c79a",
   },
   {
     id: "women-noir",
@@ -118,6 +126,7 @@ export const watches: Watch[] = [
     blurb: "A small rose-gold case on textured black, with a dial that shows its workings and keeps the rest.",
     price: 379,
     material: "Black rubber · rose gold case",
+    tone: "#d9b8a6",
   },
 ]
 

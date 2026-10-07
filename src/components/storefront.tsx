@@ -238,34 +238,31 @@ export function Storefront() {
   )
 
   return (
-    <div className="flex h-dvh bg-[#f3f1ee] p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-white">
+    <div
+      className="flex h-dvh p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-white transition-colors duration-700 ease-out"
+      style={{ backgroundColor: watch.tone }}
+    >
       <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-black shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
-        <svg
-          className="pointer-events-none absolute inset-0 z-0 hidden h-full w-full lg:block"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          <path
-            fill="#f3f1ee"
-            d="M760 0
-              C760 80 740 150 840 210
-              C940 270 990 320 1010 400
-              C1030 490 990 560 900 630
-              C760 730 520 820 300 900
-              L1440 900
-              L1440 680
-              A 250 250 0 0 1 1440 180
-              L1440 0
-              Z"
+        <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden>
+          <div
+            className="absolute top-[8%] left-[70%] aspect-square h-[56%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
+            style={{ backgroundColor: watch.tone }}
           />
-        </svg>
+          <div
+            className="absolute top-[123%] left-[70%] aspect-square h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
+            style={{ backgroundColor: watch.tone }}
+          />
+          <div
+            className="absolute top-full left-[32%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
+            style={{ backgroundColor: watch.tone }}
+          />
+        </div>
 
         <button
           type="button"
           onClick={() => setIndex((current) => (current + 1) % list.length)}
           aria-label={`Next piece: ${watchName(peek)}`}
-          className="absolute bottom-0 left-[28%] z-[15] hidden w-[clamp(150px,15vw,220px)] -translate-x-1/2 translate-y-[42%] cursor-pointer lg:block"
+          className="absolute top-[calc(100%-clamp(108px,20vh,168px))] left-[32%] z-[5] hidden w-[clamp(140px,16vw,230px)] -translate-x-1/2 cursor-pointer lg:block"
         >
           <Image
             key={peek.id}
@@ -554,8 +551,8 @@ export function Storefront() {
           </div>
         </header>
 
-        <div className="relative z-10 flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[minmax(0,38%)_1fr] lg:grid-rows-1 lg:gap-x-8">
-          <div className="order-2 flex items-center px-6 pb-4 lg:order-none lg:px-0 lg:pr-4 lg:pb-0 lg:pl-[14%]">
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[40%_1fr] lg:grid-rows-1">
+          <div className="order-2 flex items-center px-6 pb-4 lg:order-none lg:px-0 lg:pb-0 lg:pl-[12%]">
             <div key={watch.id} className="motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
               <p className="font-serif text-[12px] font-semibold tracking-[0.3em] text-white/70 uppercase sm:text-[13px]">
                 {watch.kicker}
@@ -586,7 +583,7 @@ export function Storefront() {
           </div>
 
           <div
-            className="relative order-1 h-[46vh] overflow-hidden lg:order-none lg:h-auto"
+            className="relative order-1 h-[46vh] lg:order-none lg:h-auto"
             onPointerDown={(event) => {
               dragX.current = event.clientX
             }}
@@ -598,8 +595,8 @@ export function Storefront() {
               dragX.current = null
             }}
           >
-            <div className="absolute inset-0 z-10 flex items-center justify-center">
-              <div key={watch.id} className="flex h-full items-center justify-center motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-500">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div key={watch.id} className="h-[112%] shrink-0 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-500 lg:h-[118%]">
                 <Image
                   src={watchImage(watch)}
                   alt={`${watchName(watch)} watch, ${watch.material}`}
@@ -608,7 +605,7 @@ export function Storefront() {
                   preload
                   sizes="(min-width: 1024px) 520px, 70vw"
                   draggable={false}
-                  className="h-[96%] w-auto max-w-none object-contain select-none drop-shadow-[0_26px_40px_rgba(0,0,0,0.45)] lg:h-[122%]"
+                  className="relative z-10 h-full w-auto select-none drop-shadow-[0_26px_40px_rgba(0,0,0,0.55)]"
                 />
               </div>
             </div>

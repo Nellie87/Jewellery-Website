@@ -125,10 +125,11 @@ export function Storefront() {
   const [reserving, setReserving] = useState(false)
   const [order, setOrder] = useState<string | null>(null)
   const dragX = useRef<number | null>(null)
+  const wheelArmed = useRef(true)
+  const wheelLock = useRef<number | null>(null)
 
   const list = collectionOf(collection)
   const watch = list[index] ?? list[0]
-  const peek = list[((index >= list.length ? 0 : index) + 1) % list.length]
   const count = cart.reduce((sum, line) => sum + line.qty, 0)
 
   useEffect(() => {
@@ -145,6 +146,35 @@ export function Storefront() {
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
+  }, [accountOpen, cartOpen, list.length, menuOpen, searchOpen, studioOpen])
+
+  useEffect(() => {
+    function onWheel(event: WheelEvent) {
+      if (menuOpen || searchOpen || cartOpen || accountOpen || studioOpen) return
+      const target = event.target
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) return
+      let delta = event.deltaY
+      if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) delta *= 16
+      if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) delta *= window.innerHeight
+      if (Math.abs(delta) < 8 || Math.abs(delta) <= Math.abs(event.deltaX)) return
+      event.preventDefault()
+      if (wheelLock.current) window.clearTimeout(wheelLock.current)
+      wheelLock.current = window.setTimeout(() => {
+        wheelArmed.current = true
+        wheelLock.current = null
+      }, 280)
+      if (!wheelArmed.current) return
+      wheelArmed.current = false
+      const step = delta > 0 ? 1 : -1
+      setIndex((current) => (current + step + list.length) % list.length)
+    }
+    window.addEventListener("wheel", onWheel, { passive: false })
+    return () => {
+      window.removeEventListener("wheel", onWheel)
+      if (wheelLock.current) window.clearTimeout(wheelLock.current)
+      wheelLock.current = null
+      wheelArmed.current = true
+    }
   }, [accountOpen, cartOpen, list.length, menuOpen, searchOpen, studioOpen])
 
   const results = useMemo(() => {
@@ -246,26 +276,30 @@ export function Storefront() {
         <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden>
           <div className="absolute top-[8%] left-[70%] aspect-square h-[56%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
           <div className="absolute top-[123%] left-[70%] aspect-square h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-          <div className="absolute top-full left-[32%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIndex((current) => (current + 1) % list.length)}
-          aria-label={`Next piece: ${watchName(peek)}`}
-          className="absolute top-[calc(100%-clamp(108px,20vh,168px))] left-[32%] z-[5] hidden w-[clamp(140px,16vw,230px)] -translate-x-1/2 cursor-pointer lg:block"
+        <div
+          className="pointer-events-none absolute top-[80%] left-[41%] z-[5] hidden aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-black shadow-[0_0_0_6px_rgba(255,255,255,0.9)] lg:block"
+          aria-hidden
         >
-          <Image
-            key={peek.id}
-            src={watchImage(peek)}
-            alt=""
-            width={720}
-            height={1280}
-            sizes="270px"
-            draggable={false}
-            className="h-auto w-full select-none opacity-95 transition-transform duration-500 hover:-translate-y-2 motion-safe:animate-in motion-safe:fade-in"
-          />
-        </button>
+          <div key={watch.id} className="absolute inset-0 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
+            <Image
+              src={watchImage(watch)}
+              alt=""
+              width={720}
+              height={1280}
+              sizes="1100px"
+              draggable={false}
+              className="absolute max-w-none select-none"
+              style={{
+                width: `${(720 / watch.focus.span) * 100}%`,
+                height: `${(1280 / watch.focus.span) * 100}%`,
+                left: `${50 - (watch.focus.x / watch.focus.span) * 100}%`,
+                top: `${50 - (watch.focus.y / watch.focus.span) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
 
         <header className="relative z-20 flex items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:grid lg:h-[76px] lg:grid-cols-[1fr_auto_1fr] lg:px-0 lg:py-0">
           <div className="flex items-center gap-3 sm:gap-4 lg:pl-9">

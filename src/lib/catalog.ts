@@ -13,6 +13,8 @@ export type Watch = {
   price: number
   material: string
   tone: string
+  /** Centre of the dial in the 720x1280 photo, and how many photo pixels the close-up spans. */
+  focus: { x: number; y: number; span: number }
 }
 
 export const watches: Watch[] = [
@@ -29,6 +31,7 @@ export const watches: Watch[] = [
     price: 359,
     material: "Black rubber · rose gold case",
     tone: "#e7c2a8",
+    focus: { x: 357, y: 545, span: 300 },
   },
   {
     id: "men-midnight",
@@ -43,6 +46,7 @@ export const watches: Watch[] = [
     price: 429,
     material: "Black rubber · black titanium case",
     tone: "#b7cbe2",
+    focus: { x: 355, y: 553, span: 320 },
   },
   {
     id: "men-field",
@@ -57,6 +61,7 @@ export const watches: Watch[] = [
     price: 389,
     material: "Olive rubber · steel case",
     tone: "#c5d0b4",
+    focus: { x: 358, y: 565, span: 320 },
   },
   {
     id: "men-evening",
@@ -71,6 +76,7 @@ export const watches: Watch[] = [
     price: 519,
     material: "Brown leather · graphite case",
     tone: "#d4b59a",
+    focus: { x: 358, y: 570, span: 300 },
   },
   {
     id: "women-rose",
@@ -85,6 +91,7 @@ export const watches: Watch[] = [
     price: 339,
     material: "Blush leather · rose gold case",
     tone: "#f0cfc6",
+    focus: { x: 358, y: 572, span: 230 },
   },
   {
     id: "women-ivory",
@@ -99,6 +106,7 @@ export const watches: Watch[] = [
     price: 499,
     material: "Ivory leather · white gold case",
     tone: "#efe8dc",
+    focus: { x: 345, y: 545, span: 280 },
   },
   {
     id: "women-gilt",
@@ -113,6 +121,7 @@ export const watches: Watch[] = [
     price: 449,
     material: "Tan leather · gold case",
     tone: "#e8c79a",
+    focus: { x: 350, y: 570, span: 290 },
   },
   {
     id: "women-noir",
@@ -127,6 +136,7 @@ export const watches: Watch[] = [
     price: 379,
     material: "Black rubber · rose gold case",
     tone: "#d9b8a6",
+    focus: { x: 360, y: 568, span: 250 },
   },
 ]
 

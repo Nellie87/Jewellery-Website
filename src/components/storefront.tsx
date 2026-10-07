@@ -269,17 +269,16 @@ export function Storefront() {
 
   return (
     <div className="flex h-dvh bg-[#f3f1ee] p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-[#1a1a1a]">
-      <section
-        className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] shadow-[0_24px_60px_rgba(0,0,0,0.22)] transition-colors duration-700 ease-out"
-        style={{ backgroundColor: watch.tone }}
-      >
-        <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden>
-          <div className="absolute top-[8%] left-[70%] aspect-square h-[56%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-          <div className="absolute top-[123%] left-[70%] aspect-square h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+      <div className="card-stage relative flex min-h-0 flex-1">
+        <div className="card-shadow pointer-events-none absolute inset-0" aria-hidden>
+          <div
+            className="card-shape h-full w-full rounded-[20px] transition-colors duration-700 ease-out"
+            style={{ backgroundColor: watch.tone }}
+          />
         </div>
-
+      <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px]">
         <div
-          className="pointer-events-none absolute top-[80%] left-[41%] z-[5] hidden aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-black shadow-[0_0_0_6px_rgba(255,255,255,0.9)] lg:block"
+          className="pointer-events-none absolute top-[80%] left-[41%] z-[5] hidden aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-black shadow-[0_0_0_6px_#f3f1ee] lg:block"
           aria-hidden
         >
           <div key={watch.id} className="absolute inset-0 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
@@ -692,6 +691,7 @@ export function Storefront() {
           </DialogContent>
         </Dialog>
       </section>
+      </div>
     </div>
   )
 }

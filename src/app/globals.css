@@ -119,6 +119,31 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* The peach card is a single shape: the rounded rectangle with the two big
+   circles on the right and the lens circle at the bottom carved out of it. */
+.card-stage {
+  container-type: size;
+}
+
+.card-shadow {
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.22));
+}
+
+@media (min-width: 1024px) {
+  .card-shape {
+    -webkit-mask-image:
+      radial-gradient(circle at 70% 8cqh, transparent 28cqh, #000 calc(28cqh + 0.5px)),
+      radial-gradient(circle at 70% 123cqh, transparent 55cqh, #000 calc(55cqh + 0.5px)),
+      radial-gradient(circle at 41% 80cqh, transparent calc(23cqh + 6px), #000 calc(23cqh + 6.5px));
+    -webkit-mask-composite: source-in;
+    mask-image:
+      radial-gradient(circle at 70% 8cqh, transparent 28cqh, #000 calc(28cqh + 0.5px)),
+      radial-gradient(circle at 70% 123cqh, transparent 55cqh, #000 calc(55cqh + 0.5px)),
+      radial-gradient(circle at 41% 80cqh, transparent calc(23cqh + 6px), #000 calc(23cqh + 6.5px));
+    mask-composite: intersect;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

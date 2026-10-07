@@ -73,6 +73,30 @@ function CartIcon() {
   )
 }
 
+/** A ticking seconds hand pinned to the centre of the lens, synced to the wall clock. */
+function TickingHand() {
+  const stepRef = useRef<HTMLDivElement>(null)
+  const beatRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const now = (Date.now() / 1000) % 60
+    if (stepRef.current) stepRef.current.style.animationDelay = `-${now}s`
+    if (beatRef.current) beatRef.current.style.animationDelay = `-${now % 1}s`
+  }, [])
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-10 motion-reduce:hidden" aria-hidden>
+      <div ref={stepRef} className="seconds-step absolute inset-0">
+        <div ref={beatRef} className="seconds-beat absolute inset-0">
+          <span className="absolute bottom-1/2 left-1/2 h-[47%] w-px -translate-x-1/2 bg-[#ff4a3d] shadow-[0_0_3px_rgba(0,0,0,0.7)]" />
+          <span className="absolute top-1/2 left-1/2 h-[11%] w-[2px] -translate-x-1/2 bg-[#ff4a3d] shadow-[0_0_3px_rgba(0,0,0,0.7)]" />
+          <span className="absolute top-1/2 left-1/2 size-[3.5%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ff4a3d] shadow-[0_0_4px_rgba(0,0,0,0.8)]" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function WatchThumb({ item }: { item: Watch }) {
   return (
     <Image
@@ -298,6 +322,7 @@ export function Storefront() {
               }}
             />
           </div>
+          <TickingHand />
         </div>
 
         <header className="relative z-20 flex items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:grid lg:h-[76px] lg:grid-cols-[1fr_auto_1fr] lg:px-0 lg:py-0">

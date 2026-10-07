@@ -144,6 +144,45 @@
   }
 }
 
+/* Ticking seconds hand for the lens. The outer layer steps 6deg once a second
+   (60 steps over a minute); the inner layer supplies the snap, overshoot and
+   settle of a real escapement beat. */
+@keyframes seconds-step {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes seconds-beat {
+  0% {
+    transform: rotate(-6deg);
+    animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1);
+  }
+  7% {
+    transform: rotate(1.4deg);
+    animation-timing-function: ease-in-out;
+  }
+  13% {
+    transform: rotate(-0.5deg);
+    animation-timing-function: ease-in-out;
+  }
+  19%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.seconds-step {
+  animation: seconds-step 60s steps(60, jump-end) infinite;
+}
+
+.seconds-beat {
+  animation: seconds-beat 1s linear infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

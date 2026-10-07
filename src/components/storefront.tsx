@@ -34,7 +34,7 @@ import { cn } from "@/lib/utils"
 type CartLine = { id: string; qty: number }
 
 const iconButtonClass =
-  "size-9 text-white hover:bg-white/10 hover:text-white focus-visible:ring-white/40 lg:text-black lg:hover:bg-black/10 lg:hover:text-black lg:focus-visible:ring-black/30"
+  "size-9 text-black hover:bg-black/10 hover:text-black focus-visible:ring-black/30"
 
 function MenuIcon() {
   return (
@@ -226,8 +226,8 @@ export function Storefront() {
             className={cn(
               "font-serif text-[15px] font-semibold tracking-[0.12em] transition-colors",
               item.id === watch.id
-                ? "border-b border-white text-white"
-                : "text-white/45 hover:text-white/80"
+                ? "border-b border-black text-black"
+                : "text-black/45 hover:text-black/80"
             )}
           >
             {item.code}
@@ -238,24 +238,15 @@ export function Storefront() {
   )
 
   return (
-    <div
-      className="flex h-dvh p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-white transition-colors duration-700 ease-out"
-      style={{ backgroundColor: watch.tone }}
-    >
-      <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] bg-black shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
+    <div className="flex h-dvh bg-[#f3f1ee] p-[clamp(10px,2.6vh,28px)_clamp(10px,2vw,28px)] text-[#1a1a1a]">
+      <section
+        className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px] shadow-[0_24px_60px_rgba(0,0,0,0.22)] transition-colors duration-700 ease-out"
+        style={{ backgroundColor: watch.tone }}
+      >
         <div className="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden>
-          <div
-            className="absolute top-[8%] left-[70%] aspect-square h-[56%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
-            style={{ backgroundColor: watch.tone }}
-          />
-          <div
-            className="absolute top-[123%] left-[70%] aspect-square h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
-            style={{ backgroundColor: watch.tone }}
-          />
-          <div
-            className="absolute top-full left-[32%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-700 ease-out"
-            style={{ backgroundColor: watch.tone }}
-          />
+          <div className="absolute top-[8%] left-[70%] aspect-square h-[56%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+          <div className="absolute top-[123%] left-[70%] aspect-square h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+          <div className="absolute top-full left-[32%] aspect-square h-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
         </div>
 
         <button
@@ -326,7 +317,7 @@ export function Storefront() {
                   onClick={() => chooseCollection(item)}
                   aria-pressed={collection === item}
                   className={cn(
-                    "font-serif text-[15px] font-semibold tracking-[0.14em] text-white uppercase",
+                    "font-serif text-[15px] font-semibold tracking-[0.14em] text-black uppercase",
                     collection === item && "underline decoration-1 underline-offset-[8px]"
                   )}
                 >
@@ -554,10 +545,10 @@ export function Storefront() {
         <div className="relative z-10 flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[40%_1fr] lg:grid-rows-1">
           <div className="order-2 flex items-center px-6 pb-4 lg:order-none lg:px-0 lg:pb-0 lg:pl-[12%]">
             <div key={watch.id} className="motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
-              <p className="font-serif text-[12px] font-semibold tracking-[0.3em] text-white/70 uppercase sm:text-[13px]">
+              <p className="font-serif text-[12px] font-semibold tracking-[0.3em] text-black/70 uppercase sm:text-[13px]">
                 {watch.kicker}
               </p>
-              <h1 className="mt-3 font-display text-[clamp(1.9rem,3.3vw,3.6rem)] leading-[1.1] tracking-[0.02em] text-white uppercase">
+              <h1 className="mt-3 font-display text-[clamp(1.9rem,3.3vw,3.6rem)] leading-[1.1] tracking-[0.02em] text-black uppercase">
                 {watch.lead} {watch.trail}
                 {(watch.lead2 || watch.trail2) && (
                   <>
@@ -566,11 +557,11 @@ export function Storefront() {
                   </>
                 )}
               </h1>
-              <p className="mt-4 max-w-[300px] font-serif text-[16px] leading-[1.35] text-white/90 sm:text-[18px]">
+              <p className="mt-4 max-w-[300px] font-serif text-[16px] leading-[1.35] text-black/80 sm:text-[18px]">
                 {watch.blurb}
               </p>
               <Button
-                className="mt-6 h-10 rounded-[4px] bg-white px-6 text-[12px] font-semibold tracking-[0.14em] text-black uppercase hover:bg-white/85"
+                className="mt-6 h-10 rounded-[4px] bg-black px-6 text-[12px] font-semibold tracking-[0.14em] text-white uppercase hover:bg-black/85"
                 onClick={() => addWatch()}
               >
                 {added ? "Added to cart" : `Add to cart · ${formatPrice(watch.price)}`}
@@ -621,7 +612,7 @@ export function Storefront() {
                 key={kind}
                 variant="ghost"
                 size="icon"
-                className="size-8 text-white hover:bg-white/10 hover:text-white"
+                className="size-8 text-black hover:bg-black/10 hover:text-black"
                 aria-label={kind}
                 onClick={() => setStudioOpen(true)}
               >
@@ -629,7 +620,7 @@ export function Storefront() {
               </Button>
             ))}
           </div>
-          <nav className="flex gap-4 font-serif text-[14px] font-semibold tracking-[0.16em] text-white/80 uppercase lg:hidden" aria-label="Collections">
+          <nav className="flex gap-4 font-serif text-[14px] font-semibold tracking-[0.16em] text-black/80 uppercase lg:hidden" aria-label="Collections">
             {(["men", "women"] as const).map((item) => (
               <button
                 key={item}
@@ -645,9 +636,9 @@ export function Storefront() {
             type="button"
             aria-label="Next watch"
             onClick={() => setIndex((current) => (current + 1) % list.length)}
-            className="flex h-8 w-[18px] items-center justify-center rounded-full border border-white/90 lg:border-black"
+            className="flex h-8 w-[18px] items-center justify-center rounded-full border border-black"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-white lg:bg-black" />
+            <span className="h-1.5 w-1.5 rounded-full bg-black" />
           </button>
         </footer>
 

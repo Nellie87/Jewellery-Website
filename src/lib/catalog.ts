@@ -226,7 +226,7 @@ export const jewelleryEdits: JewelleryEdit[] = [
         price: 299,
         image: "/jewellery/pearl-pendant.png",
         focus: { x: 358, y: 648, span: 230 },
-        zoom: 1.3,
+        zoom: 1.55,
         width: 735,
         height: 919,
       },

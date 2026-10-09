@@ -138,6 +138,17 @@
   }
 }
 
+/* Tall phones: use the spare height so the pieces are not lost in empty space. */
+@container card (max-width: 639px) and (min-height: 700px) {
+  .pearl-feature {
+    height: clamp(150px, 26cqh, 260px);
+  }
+
+  .pearl-side {
+    height: clamp(88px, 15cqh, 150px);
+  }
+}
+
 /* Wide, short windows (phones in landscape): keep the pearl edit on one screen. */
 @container card (min-width: 640px) and (max-height: 560px) {
   .pearl-copy {
@@ -169,6 +180,25 @@
   }
 }
 
+/* Very short landscape phones: trim the pearl edit further so the button stays above the footer. */
+@container card (min-width: 560px) and (max-height: 420px) {
+  .pearl-copy p:last-of-type {
+    display: none;
+  }
+
+  .pearl-copy h1 {
+    font-size: 1.4rem;
+  }
+
+  .pearl-feature {
+    height: min(30cqh, 96px);
+  }
+
+  .pearl-side {
+    height: min(18cqh, 60px);
+  }
+}
+
 /* Tall enough for the editorial sizes: pendant above, earrings and ring below. */
 @container card (min-width: 640px) and (min-height: 640px) {
   .pearl-feature {
@@ -190,7 +220,14 @@
 /* The product photo is taken out of flow, so its box has no minimum size and a
    short screen will flex-shrink it away. Hold a visible slice, then let the
    copy give up space and scroll instead of covering the footer. */
+html,
+body {
+  /* Stop a downward swipe from triggering pull-to-refresh instead of changing piece. */
+  overscroll-behavior-y: none;
+}
+
 .hero-stage {
+  touch-action: none;
   /* Shrink well before the copy, so the price stays on screen and the photo gives up height first. */
   flex: 1 5 46vh;
   min-height: 120px;
@@ -292,7 +329,7 @@
   }
 
   .hero-tagline {
-    margin-top: 0.2rem;
+    display: none;
   }
 
   .hero-cta {

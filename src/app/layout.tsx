@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Outfit, Playfair_Display } from "next/font/google";
+import { ShopProvider } from "@/components/shop/shop-provider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -21,7 +22,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "S'WATCH — Super Luxury Watches",
+  title: "WATCH OUT — Super Luxury Watches",
   description:
     "A small watch house in Lisbon. Open-worked skeleton watches, rose gold to black titanium, four pieces a season.",
   icons: { icon: "/favicon.svg" },
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${outfit.variable} ${playfair.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="h-dvh overflow-hidden bg-[#f3f1ee] font-sans text-white">{children}</body>
+      <body className="h-dvh overflow-hidden bg-[#f3f1ee] font-sans text-white">
+        <ShopProvider>{children}</ShopProvider>
+      </body>
     </html>
   );
 }
